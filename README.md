@@ -22,3 +22,8 @@ model environment
  return conditions at pos and time
  initally assume 
 
+Hacking the code
+================
+Install [pyflakes](https://pypi.python.org/pypi/pyflakes) and then run `make`
+to check your Python syntax and then run the unit tests.
+
