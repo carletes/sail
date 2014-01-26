@@ -1,5 +1,5 @@
 import unittest
-from math import degrees, fmod, radians, cos, sin, sqrt, pi
+from math import degrees, fmod, radians, cos, sin, sqrt
 from coords import nav_to_math, math_to_nav
 
 class Boat():
