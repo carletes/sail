@@ -1,16 +1,15 @@
 import unittest
-from math import degrees, fmod, radians, cos, sin, sqrt
-from coords import nav_to_math, math_to_nav
+from math import degrees, fmod, radians, cos, sin, sqrt, pi
+
 
 class Boat():
     def __init__(self, position, compass):
         self._position = position
+        # want 0 <= compass < 360
         compass = fmod(compass, 360)
-        self._theta = radians(nav_to_math(compass))
-
-    @property
-    def theta(self):
-        return self._theta
+        if compass < 0:
+            compass = 360 + compass
+        self._theta = radians(compass)
 
     @property
     def position(self):
@@ -18,12 +17,12 @@ class Boat():
 
     @property
     def compass(self):
-        return math_to_nav(degrees(self._theta))
+        return degrees(self._theta)
 
     def move(self,distance):
         # TODO: check distance is positive, don't allow if not
-        d_x = distance * cos(self._theta)
-        d_y = distance * sin(self._theta)
+        d_x = distance * sin(self._theta)
+        d_y = distance * cos(self._theta)
         self._position = (self._position[0] + d_x, self._position[1] + d_y)
 
     def steer(self,degrees):
@@ -31,7 +30,12 @@ class Boat():
         # no spinning allowed, let's limit turns to less than 360
         degrees = fmod(degrees, 360)
         # set new theta...
-        self._theta -= radians(degrees)
+        # and make sure it is always positive and less than 2 * pi
+        self._theta += radians(degrees)
+        if self._theta >= 2 * pi:
+            self._theta = fmod(self._theta, 2 * pi)
+        if self._theta < 0:
+            self._theta = 2 * pi + self._theta
 
 class BoatTest(unittest.TestCase):
     def test_create_boat(self):
@@ -53,20 +57,14 @@ class BoatTest(unittest.TestCase):
         boat = Boat(position=(0,0), compass=0)
         boat.steer(90)
         self.assertEqual(boat.compass, 90)
-        self.assertEqual(degrees(boat.theta), 0)
         boat.steer(-10)
         self.assertEqual(boat.compass,80)
-        self.assertEqual(degrees(boat.theta), 10)
         boat.steer(20)
         self.assertEqual(boat.compass,100)
-        self.assertEqual(fmod(degrees(boat.theta),360), -10)
         boat.steer(-180)
         self.assertEqual(boat.compass,280)
-        self.assertEqual(fmod(degrees(boat.theta),360), 170)
         boat.steer(730)
         self.assertEqual(boat.compass,290)
-        # next one off by .00000000000003 for some reason
-        self.assertAlmostEqual(fmod(degrees(boat.theta),360), 160)
 
     def test_move_and_steer_boat(self):
         boat = Boat(position=(0,0), compass=0)
