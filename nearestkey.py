@@ -1,5 +1,3 @@
-import unittest
-
 def nearest_key(dict,target):
     """
     'Given a dict in which all keys are numeric, return the key closest to a

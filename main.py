@@ -44,6 +44,23 @@ class Boat():
         if self._theta < 0:
             self._theta = 2 * pi + self._theta
 
+class Environment():
+    def __init__(self, wind):
+        self._wind = wind
+
+    @property
+    def wind(self):
+        return self._wind
+
+    def get_wind(self, time, position):
+        """
+        given a time and position, return the windspeed and winddirection at 
+         at that location and time
+        """
+        # to start we're assuming constant windspeed 15 from the north
+        # everywhere and all the time
+        return (15,0)
+
 class BoatTest(unittest.TestCase):
     def test_create_boat(self):
         boat = Boat(position=(30,30), compass=75, polars={0:{0:0}})
@@ -92,7 +109,14 @@ class BoatTest(unittest.TestCase):
         self.assertEqual(boat.polars(10,180),5)
         self.assertEqual(boat.polars(5,170),3)
 
+class EnvironmentTest(unittest.TestCase):
+    def test_create_Environment(self):
+        environment = Environment(wind={})
+        self.assertEqual(environment.wind,{})
 
+    def test_get_wind(self):
+        environment = Environment(wind={})
+        self.assertEqual(environment.get_wind(time=0,position=(45,67)),(15,0))
     
 
 def main():

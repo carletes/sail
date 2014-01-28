@@ -11,16 +11,19 @@ Boat represented by circle with a radius drawn in a different color to indicate 
 
 TODO
 ====
-more tests of conversion between coordinate systems
-test initialise with silly values (compass = 2000)
 
 boat
  add polars tables
+ given a windangle and windspeed return the theoretical boatspeed
+ first approximation: if no value in table for (wtheta,wspeed) then get value for 'nearest' windspeed and windangle in table. can do fancier interpolation later, or even fit a function to the table values and then use the function.
 
 model environment
- wind and tide layers
+ wind and tide layers, start with just wind.
  return conditions at pos and time
  initally assume 
+
+graphics rendering
+ use kivy to render boat being steered around at constant speed
 
 Hacking the code
 ================
