@@ -1,4 +1,4 @@
-def nearest_key(dict,target):
+def nearest_key(dict, target):
     """
     'Given a dict in which all keys are numeric, return the key closest to a
     supplied target.'
@@ -26,22 +26,23 @@ def nearest_key(dict,target):
     leftneighbour = None
     rightneighbour = None
     for i in dict.keys():
-        if not isinstance(i, (int, long, float, complex)): continue
+        if not isinstance(i, (int, long, float, complex)):
+            continue
         if i < target:
-            if leftneighbour == None:
+            if leftneighbour is None:
                 leftneighbour = i
             elif leftneighbour < i:
                 leftneighbour = i
         elif i > target:
-            if rightneighbour == None:
+            if rightneighbour is None:
                 rightneighbour = i
             elif rightneighbour > i:
-                rightneighbour = i            
+                rightneighbour = i
     if leftneighbour == rightneighbour:
         return leftneighbour
-    if leftneighbour == None:
+    if leftneighbour is None:
         return rightneighbour
-    elif rightneighbour == None:
+    elif rightneighbour is None:
         return leftneighbour
     elif (target - leftneighbour) <= (rightneighbour - target):
         return leftneighbour
@@ -52,7 +53,7 @@ def nearest_key(dict,target):
 def _test():
     import doctest
     doctest.testmod()
- 
+
 
 if __name__ == "__main__":
     _test()
