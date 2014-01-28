@@ -1,5 +1,6 @@
 import unittest
 from math import degrees, fmod, radians, cos, sin, sqrt, pi
+
 from nearestkey import nearest_key
 
 
@@ -47,7 +48,9 @@ class Boat():
         if self._theta < 0:
             self._theta = 2 * pi + self._theta
 
+
 class BoatTest(unittest.TestCase):
+
     def test_create_boat(self):
         boat = Boat(position=(30,30), compass=75)
         self.assertEqual(boat.position,(30,30))
@@ -94,13 +97,10 @@ class BoatTest(unittest.TestCase):
         self.assertEqual(boat.polars(6,170),3)
         self.assertEqual(boat.polars(10,180),5)
         self.assertEqual(boat.polars(5,170),3)
-
-
     
 
 def main():
     pass
-
 
 
 if __name__ == '__main__':
