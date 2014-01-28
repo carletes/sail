@@ -1,16 +1,20 @@
 import unittest
 from math import degrees, fmod, radians, cos, sin, sqrt, pi
+
 from nearestkey import nearest_key
 
 
 class Boat():
-    def __init__(self, position, compass, polars):
+
+    def __init__(self, position, compass, polars=None):
         self._position = position
         # want 0 <= compass < 360
         compass = fmod(compass, 360)
         if compass < 0:
             compass = 360 + compass
         self._theta = radians(compass)
+        if polars is None:
+            polars = {0: {0: 0}}
         self._polars = polars
 
     @property
@@ -44,6 +48,7 @@ class Boat():
         if self._theta < 0:
             self._theta = 2 * pi + self._theta
 
+
 class Environment():
     def __init__(self, wind):
         self._wind = wind
@@ -61,15 +66,17 @@ class Environment():
         # everywhere and all the time
         return (15,0)
 
+
 class BoatTest(unittest.TestCase):
+
     def test_create_boat(self):
-        boat = Boat(position=(30,30), compass=75, polars={0:{0:0}})
+        boat = Boat(position=(30,30), compass=75)
         self.assertEqual(boat.position,(30,30))
         self.assertEqual(boat.compass, 75)
         self.assertEqual(boat.polars(0,0),0)
 
     def test_move_boat(self):
-        boat = Boat(position=(0,0), compass=0, polars={0:{0:0}})
+        boat = Boat(position=(0,0), compass=0)
         boat.move(10)
         self.assertAlmostEqual(boat.position[0],0)
         self.assertAlmostEqual(boat.position[1],10)
@@ -79,7 +86,7 @@ class BoatTest(unittest.TestCase):
         self.assertAlmostEqual(boat.position[1],0)        
 
     def test_steer_boat(self):
-        boat = Boat(position=(0,0), compass=0, polars={0:{0:0}})
+        boat = Boat(position=(0,0), compass=0)
         boat.steer(90)
         self.assertEqual(boat.compass, 90)
         boat.steer(-10)
@@ -92,7 +99,7 @@ class BoatTest(unittest.TestCase):
         self.assertEqual(boat.compass,290)
 
     def test_move_and_steer_boat(self):
-        boat = Boat(position=(0,0), compass=0, polars={0:{0:0}})
+        boat = Boat(position=(0,0), compass=0)
         boat.steer(45)
         boat.move(sqrt(200))
         self.assertAlmostEqual(boat.position[0],10)        
@@ -109,6 +116,7 @@ class BoatTest(unittest.TestCase):
         self.assertEqual(boat.polars(10,180),5)
         self.assertEqual(boat.polars(5,170),3)
 
+
 class EnvironmentTest(unittest.TestCase):
     def test_create_Environment(self):
         environment = Environment(wind={})
@@ -121,7 +129,6 @@ class EnvironmentTest(unittest.TestCase):
 
 def main():
     pass
-
 
 
 if __name__ == '__main__':
